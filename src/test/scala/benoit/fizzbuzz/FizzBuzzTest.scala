@@ -10,19 +10,8 @@ import org.scalatest.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class FizzBuzzTest extends FunSuite with MustMatchers {
 
-  def toFizzBuzz(i: Int): String = {
-    def isFizz = i % 3 == 0
-    def isBuzz = i % 5 == 0
-
-    if(isFizz && isBuzz) "fizzbuzz"
-    else if(isFizz) "fizz"
-    else if(isBuzz) "buzz"
-    else i + ""
-  }
-
-  def fizzBuzzSequence(numbers: Int*) :String = {
-    (numbers map toFizzBuzz) mkString(",")
-  }
+  import FizzBuzz.toFizzBuzz
+  import FizzBuzz.fizzBuzzSequence
 
   test("1 should return 1 because it is not a multiple of 3 or 5") {
     assert(toFizzBuzz(1) === "1")
