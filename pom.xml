@@ -7,6 +7,7 @@
     <groupId>katas</groupId>
     <artifactId>katas</artifactId>
     <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
 
     <dependencies>
         <dependency>
@@ -25,4 +26,43 @@
             <version>4.8.2</version>
         </dependency>
     </dependencies>
+
+    <scm>
+        <connection>scm:git:git@github.com:howzat/katas.git</connection>
+        <developerConnection>scm:git:git@github.com:howzat/katas.git</developerConnection>
+        <tag>master</tag>
+        <url>https://github.com/howzat/katas</url>
+    </scm>
+
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>net.alchim31.maven</groupId>
+                <artifactId>scala-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <scalaVersion>2.10.2</scalaVersion>
+                    <args>
+                        <arg>-optimize</arg>
+                        <arg>-deprecation</arg>
+                        <arg>-unchecked</arg>
+                        <arg>-encoding</arg>
+                        <arg>utf8</arg>
+                    </args>
+                    <recompileMode>incremental</recompileMode>
+                    <useZincServer>true</useZincServer>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
