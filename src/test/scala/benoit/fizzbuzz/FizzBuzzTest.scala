@@ -1,4 +1,4 @@
-package beniot.fizzbuzz
+package benoit.fizzbuzz
 
 import org.scalatest.junit.JUnitRunner
 import org.scalatest.{FreeSpec, FunSuite}

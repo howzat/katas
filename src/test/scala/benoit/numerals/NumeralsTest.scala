@@ -1,4 +1,4 @@
-package beniot.numerals
+package benoit.numerals
 
 import org.scalatest.FunSuite
 
