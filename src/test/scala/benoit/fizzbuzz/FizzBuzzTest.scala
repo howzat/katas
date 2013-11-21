@@ -1,11 +1,13 @@
 package benoit.fizzbuzz
 
-import org.scalatest.junit.JUnitRunner
-import org.scalatest.{FreeSpec, FunSuite}
+
+import org.scalatest.FunSuite
 import org.scalatest.matchers.MustMatchers
-import scala.collection.immutable.Range.Inclusive
+import org.junit.runner.RunWith
+import org.scalatest.junit.JUnitRunner
 
 
+@RunWith(classOf[JUnitRunner])
 class FizzBuzzTest extends FunSuite with MustMatchers {
 
   def toFizzBuzz(i: Int): String = {
