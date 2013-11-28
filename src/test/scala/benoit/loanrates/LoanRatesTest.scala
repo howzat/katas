@@ -7,14 +7,13 @@ import org.scalatest.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class LoanRatesTest extends FunSuite {
 
-
   def getInterestRateFor(i: Int): Float = {
     if(i >= 0 && i < 1000) 0.01F
     else if(i >= 1000 && i < 5000) 0.02F
     else 0.03F
   }
 
-  def getInterest(i: Int) : Float = {
+  def getInterest(i: Int): Float = {
     val interestRate = getInterestRateFor(i)
     i * interestRate
   }
@@ -41,6 +40,5 @@ class LoanRatesTest extends FunSuite {
     }
   }
 
-  def toPence(pounds:Int) = pounds * 100
-
+  def toPence(pounds: Int) = pounds * 100
 }
