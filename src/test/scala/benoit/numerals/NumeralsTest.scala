@@ -7,7 +7,6 @@ import org.scalatest.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class NumeralsTest extends FunSuite {
 
-
   def toNumeral(digit: Int): String = {
     if(digit >= 500) "D" + toNumeral(digit - 500)
     else if(digit >= 400) "CD" + toNumeral(digit - 400)
