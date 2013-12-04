@@ -23,7 +23,7 @@ class NumeralsTest2 extends FunSuite with RomanNumeralsTestData {
 
   forAll (RomanNumeralsDataTable) { numeral:Numeral =>
     test(s"the numernal for ${numeral.value} should be ${numeral.symbol}") {
-      assert(toNumeral(numeral.value) == numeral.symbol, s"expected ${numeral.symbol} for ${numeral.value}, was ${toNumeral(numeral.value)}")
+      assert(toNumeral(numeral.value) === numeral.symbol, s"expected ${numeral.symbol} for ${numeral.value}, was ${toNumeral(numeral.value)}")
     }
   }
 }
