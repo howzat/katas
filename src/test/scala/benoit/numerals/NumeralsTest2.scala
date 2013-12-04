@@ -2,53 +2,29 @@ package benoit.numerals
 
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
-import org.scalatest.{FunSuite, FunSpec}
-import scala.io.Source
-import System._
-
+import org.scalatest.FunSuite
+import scala.annotation.tailrec
 
 @RunWith(classOf[JUnitRunner])
-class NumeralsTest2 extends FunSuite {
+class NumeralsTest2 extends FunSuite with RomanNumeralsTestData {
 
-  case class Numeral(symbol: String, value: Int)
-
-  val filePath = "src/test/scala/benoit/numerals/numerals.txt"
-
-  val numeralTestData = {
-    (Source fromFile filePath getLines() map (_ split (",") toList) toList) map {
-      case value :: symbol :: Nil => Numeral(symbol.trim, Integer.parseInt(value.trim))
-      case _ => fail("couldn't initialise numeral table data")
-    }
-  }
-
-  val numerals = Seq(
-                      Numeral("I", 1),
-                      Numeral("IV", 4),
-                      Numeral("V", 5),
-                      Numeral("IX", 9),
-                      Numeral("X", 10),
-                      Numeral("XL", 40),
-                      Numeral("L", 50),
-                      Numeral("XC", 90),
-                      Numeral("C", 100),
-                      Numeral("CD", 400),
-                      Numeral("D", 500),
-                      Numeral("CM", 900),
-                      Numeral("M", 1000)
-                    )
-
+  override def path= "src/test/scala/benoit/numerals/numerals.txt"
 
   def toNumeral(value: Int): String = {
+    @tailrec
+    def toNumeral(numerals:List[Numeral], result:Numeral) : Numeral = numerals match  {
+      case Nil => result
+      case numeral :: rest if(result.value >= numeral.value) => toNumeral(numerals, Numeral(result.symbol+numeral.symbol, result.value - numeral.value))
+      case numeral :: rest => toNumeral(rest, result)
+    }
 
-
+    toNumeral(RomanNumerals, Numeral("", value)).symbol
   }
 
-  numeralTestData take (2) map {
-    case Numeral(symbol, value) =>
-      test(s"the numernal for $value should be $symbol") {
-        assert(toNumeral(value) == symbol, s"expected $symbol for $value, was ${toNumeral(value)}")
-      }
+  forAll (RomanNumeralsDataTable) { numeral:Numeral =>
+    test(s"the numernal for ${numeral.value} should be ${numeral.symbol}") {
+      assert(toNumeral(numeral.value) == numeral.symbol, s"expected ${numeral.symbol} for ${numeral.value}, was ${toNumeral(numeral.value)}")
+    }
   }
-
-
 }
+
