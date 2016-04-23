@@ -2,8 +2,6 @@ package benoit.hackzone
 
 object StreamHacking extends App {
 
-  import Stream._
-
 
 
 

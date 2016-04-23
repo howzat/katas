@@ -1,17 +1,12 @@
 package benoit.fizzbuzz
 
 
-import org.scalatest.FunSuite
-import org.scalatest.matchers.MustMatchers
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
+import org.scalatest.{FunSuite, ShouldMatchers}
 
 
-@RunWith(classOf[JUnitRunner])
-class FizzBuzzTest extends FunSuite with MustMatchers {
+class FizzBuzzTest extends FunSuite with ShouldMatchers {
 
-  import FizzBuzz.toFizzBuzz
-  import FizzBuzz.fizzBuzzSequence
+  import FizzBuzz.{fizzBuzzSequence, toFizzBuzz}
 
   test("1 should return 1 because it is not a multiple of 3 or 5") {
     assert(toFizzBuzz(1) === "1")

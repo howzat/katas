@@ -1,12 +1,6 @@
 package benoit.hackzone
 
 import org.scalacheck._
-import org.scalacheck.Prop._
-import org.scalacheck.Test.Parameters
-import org.scalatest.prop
-import org.scalacheck.Prop.forAll
-import org.scalacheck.Test._
-import org.scalacheck.Test.Parameters.Default
 
 
 object RGxx extends Properties("Password Validation") {

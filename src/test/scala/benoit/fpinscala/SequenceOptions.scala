@@ -1,7 +1,8 @@
 package benoit.fpinscala
 
-import org.scalatest.{WordSpec, FunSpec, fixture}
+import org.scalatest.WordSpec
 import org.scalatest.matchers.ShouldMatchers
+
 import scala.util.Try
 
 

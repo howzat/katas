@@ -1,8 +1,8 @@
 package benoit.numerals
 
+import org.scalatest.prop.{TableDrivenPropertyChecks, TableFor1}
+
 import scala.io.Source
-import org.scalatest.prop.{TableFor1, TableDrivenPropertyChecks}
-import java.io.Serializable
 
 trait RomanNumeralsTestData extends TableDrivenPropertyChecks {
 

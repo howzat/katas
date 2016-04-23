@@ -1,10 +1,7 @@
 package benoit.numerals
 
 import org.scalatest.FunSuite
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
 
-@RunWith(classOf[JUnitRunner])
 class NumeralsTest extends FunSuite {
 
   def toNumeral(digit: Int): String = {

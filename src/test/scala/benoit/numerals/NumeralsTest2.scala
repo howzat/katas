@@ -1,11 +1,9 @@
 package benoit.numerals
 
-import org.junit.runner.RunWith
-import org.scalatest.junit.JUnitRunner
 import org.scalatest.FunSuite
+
 import scala.annotation.tailrec
 
-@RunWith(classOf[JUnitRunner])
 class NumeralsTest2 extends FunSuite with RomanNumeralsTestData {
 
   override def path= "src/test/scala/benoit/numerals/numerals.txt"
