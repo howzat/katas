@@ -5,7 +5,6 @@ package benoit.ascats
 import benoit.ascats.typeclasses.{Person, PrinterApi, PrinterSyntax}
 import benoit.ascats.typeclasses.PrintersImplementations._
 import org.scalatest.{FlatSpec, ShouldMatchers}
-
 import scala.language.postfixOps
 
 

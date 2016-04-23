@@ -17,8 +17,6 @@ lazy val root = (project in file("."))
   .settings(projectProperties: _*)
   .settings(
   name := "katas",
-    resolvers += "Artima Maven Repository" at "http://repo.artima.com/releases",
     libraryDependencies ++= dependencies,
     updateOptions := updateOptions.value.withCachedResolution(true)
 )
-
