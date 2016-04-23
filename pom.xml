@@ -10,8 +10,7 @@
     <packaging>jar</packaging>
 
     <properties>
-        <scala.version>2.10.3</scala.version>
-        <scala.version>2.10.3</scala.version>
+        <scala.version>2.10.4</scala.version>
         <scala.binary>2.10</scala.binary>
         <zinc.port>3030</zinc.port>
         <maven.compiler.source>1.6</maven.compiler.source>
@@ -23,12 +22,14 @@
         <dependency>
             <groupId>org.scalatest</groupId>
             <artifactId>scalatest_2.10</artifactId>
-            <version>1.9.1</version>
+            <version>2.1.7</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.specs2</groupId>
             <artifactId>specs2_2.10</artifactId>
-            <version>2.2.2</version>
+            <version>2.3.12</version>
+            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -39,6 +40,12 @@
             <groupId>com.typesafe.akka</groupId>
             <artifactId>akka-actor_2.10</artifactId>
             <version>2.2.2</version>
+        </dependency>
+        <dependency>
+            <groupId>org.scalacheck</groupId>
+            <artifactId>scalacheck_2.10</artifactId>
+            <version>1.11.4</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

@@ -13,6 +13,6 @@ object FizzBuzz {
   }
 
   def fizzBuzzSequence(numbers: Int*): String = {
-    (numbers map toFizzBuzz) mkString (",")
+    (numbers map toFizzBuzz) mkString ","
   }
 }
