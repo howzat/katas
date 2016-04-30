@@ -1,14 +1,14 @@
 package benoit.ascats
 
 
-
-import benoit.ascats.typeclasses.{Person, PrinterApi, PrinterSyntax}
 import benoit.ascats.typeclasses.PrintersImplementations._
+import benoit.ascats.typeclasses.{Person, PrinterApi, PrinterSyntax}
 import org.scalatest.{FlatSpec, ShouldMatchers}
+
 import scala.language.postfixOps
 
 
-class TypeClassesSpec extends FlatSpec with ShouldMatchers {
+class TypeClassesSpec extends FlatSpec with ShouldMatchers  {
 
   val person = Person("Ben", 40, "developer")
 
