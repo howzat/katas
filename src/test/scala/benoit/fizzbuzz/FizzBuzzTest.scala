@@ -1,10 +1,10 @@
 package benoit.fizzbuzz
 
 
-import org.scalatest.{FunSuite, ShouldMatchers}
+import org.scalatest.FunSuite
 
 
-class FizzBuzzTest extends FunSuite with ShouldMatchers {
+class FizzBuzzTest extends FunSuite  {
 
   import FizzBuzz.{fizzBuzzSequence, toFizzBuzz}
 

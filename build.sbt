@@ -2,8 +2,8 @@
 lazy val dependencies =Seq(
   "org.typelevel" %% "cats" % "0.4.1"  withSources() withJavadoc(),
   "org.scalacheck" %% "scalacheck" % "1.12.1" % "test" withSources() withJavadoc(),
-  "org.scalactic" %% "scalactic" % "2.2.6"  withSources() withJavadoc(),
-  "org.scalatest" %% "scalatest" % "2.2.6" % "test"  withSources() withJavadoc()
+  "org.scalactic" %% "scalactic" % "3.0.0" % "test" withSources() withJavadoc(),
+  "org.scalatest" % "scalatest_2.11" % "3.0.0" % "test"  withSources() withJavadoc()
 )
 
 lazy val projectProperties = Seq(
@@ -16,7 +16,8 @@ lazy val projectProperties = Seq(
 lazy val root = (project in file("."))
   .settings(projectProperties: _*)
   .settings(
-  name := "katas",
+    name := "katas",
     libraryDependencies ++= dependencies,
-    updateOptions := updateOptions.value.withCachedResolution(true)
+    updateOptions := updateOptions.value.withCachedResolution(true),
+    unmanagedResourceDirectories in Compile +=   baseDirectory.value / "resources"
 )

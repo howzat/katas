@@ -1,12 +1,12 @@
 package benoit.fpinscala
 
-import org.scalatest.WordSpec
-import org.scalatest.matchers.ShouldMatchers
+import benoit.UnitSpec
+import org.scalatest.{Matchers, WordSpec}
 
 import scala.util.Try
 
 
-class SequenceOptions extends WordSpec with ShouldMatchers {
+class SequenceOptions extends WordSpec with Matchers {
 
 
   def identity[A](a:A) = a

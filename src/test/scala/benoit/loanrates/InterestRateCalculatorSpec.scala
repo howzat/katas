@@ -14,6 +14,11 @@ import scala.math.BigDecimal.RoundingMode
 class InterestRateCalculatorSpec extends FlatSpec with PropertyChecks {
 
 
+  override implicit val generatorDrivenConfig: PropertyCheckConfiguration = new PropertyCheckConfiguration(
+    workers = 10,
+    minSize = 3000
+  )
+
   def calculateStandardInterestRate(balance: BigDecimal): BigDecimal = balance match {
     case _ if balance < 0 => 0.0
     case _ if balance >= 0 && balance <= 1000.0 => 0.01
@@ -37,9 +42,7 @@ class InterestRateCalculatorSpec extends FlatSpec with PropertyChecks {
 
   "An InterestRateCalculator" should "return an interest rate of 0 whenever the balance is negative" in {
     forAll( negativeOrEmptyBalances ) { balance =>
-      whenever(balance < BigDecimal(0.0)) {
-        calculateStandardInterestRate(balance) must equal(0.0)
-      }
+      calculateStandardInterestRate(balance) must equal(0.0)
     }
   }
 
@@ -72,6 +75,8 @@ class InterestRateCalculatorSpec extends FlatSpec with PropertyChecks {
   }
 
   it should "apply interest to the correct precision" in {
+
+
     applyInterest(1234.56, standardRate) must equal(1259.25)
   }
 }
