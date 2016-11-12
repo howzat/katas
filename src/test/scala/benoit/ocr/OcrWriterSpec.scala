@@ -1,76 +1,161 @@
 package benoit.ocr
 
 import benoit.UnitSpec
+import benoit.ocr.DefaultOcrWriters._
+import benoit.ocr.OcrSyntax._
+import org.scalatest.DiagrammedAssertions
+
+class OcrWriterSpec extends UnitSpec with DiagrammedAssertions {
+
+  "OcrWriter" - {
+
+    val expectedValues = Array(
+      " _ \n| |\n|_|\n   \n",
+      "   \n  |\n  |\n   \n",
+      " _ \n _|\n|_ \n   \n",
+      " _ \n _|\n _|\n   \n",
+      "   \n|_|\n  |\n   \n",
+      " _ \n|_ \n _|\n   \n",
+      " _ \n|_ \n|_|\n   \n",
+      " _ \n  |\n  |\n   \n",
+      " _ \n|_|\n|_|\n   \n",
+      " _ \n|_|\n _|\n   \n"
+    )
+
+    "should write OcrNumbers 0-9" in {
+
+      forAll(0 to 9) { (i: Int) =>
+
+        val ocr = OcrNumber(i+"")
+        val expectedCharArray = expectedValues(i)
+
+        info(s"OcrDigit(${ocr.value}) should serialise to\n${expectedCharArray.mkString}")
+        ocr.write should have length 16
+        ocr.write should be(expectedCharArray)
+      }
+    }
 
 
-class OcrWriterSpec extends UnitSpec {
+    "should write OcrNumber 000000000" in {
 
-  type Entry = Array[Array[String]]
-//
-//  def toOcrEntry(digits: Int*): Entry = {
-//    // 4 lines to print in each entry
-//    val lines: Entry = Array(Array[String](), Array[String](), Array[String](), Array[String]())
-//
-//    digits.foreach { digitToEncode =>
-//      val encoded = OcrValue(digitToEncode)
-//      lines(0) = lines(0) :+ encoded.contentByLine(0)
-//      lines(1) = lines(1) :+ encoded.contentByLine(1)
-//      lines(2) = lines(2) :+ encoded.contentByLine(2)
-//      lines(3) = lines(3) :+ encoded.contentByLine(3)
-//    }
-//
-//    lines
-//  }
-//
-//  def writeEntry(entry: Entry): String = {
-//    val printLines = entry map (_ mkString("", "", "\n"))
-//    (printLines mkString) dropRight 1 // remove trailing newline
-//  }
-//
-//  "An ocr writer" - {
-//
-//    "should encode a single 0 to OcrNumber" in {
-//      OcrValue(0) shouldBe " _ \n" + "| |\n" + "|_|\n" + "   "
-//    }
-//
-//
-//    "should encode a single OcrNumber 0" in {
-//
-//      val expectedEncoding = Array(Array(" _ "), Array("| |"), Array("|_|"), Array("   "))
-//
-//      val encoded = toOcrEntry(0)
-//      encoded shouldBe expectedEncoding
-//      writeEntry(encoded) shouldBe " _ \n" + "| |\n" + "|_|\n" + "   "
-//    }
-//
-//    "should encode a 1 digit" in {
-//
-//      val expectedEncoding = Array(Array("   "), Array("  |"), Array("  |"), Array("   "))
-//
-//      val encoded = toOcrEntry(1)
-//      encoded shouldBe expectedEncoding
-//      writeEntry(encoded) shouldBe "   \n" + "  |\n" + "  |\n" + "   "
-//    }
-//
-//    "should encode 2 '0' digits" in {
-//
-//      val expectedEncoding = Array(Array(" _ ", " _ "), Array("| |", "| |"), Array("|_|", "|_|"), Array("   ", "   "))
-//
-//      val encoded = toOcrEntry(0, 0)
-//      encoded shouldBe expectedEncoding
-//      writeEntry(encoded) shouldBe " _  _ \n" + "| || |\n" + "|_||_|\n" + "      "
-//    }
-//
-//
-//
-//    "should encode a sequence of 2 1's" in {
-//
-//      val expectedEncoding = Array(Array("   ", "   "), Array("  |", "  |"), Array("  |", "  |"), Array("   ", "   "))
-//
-//      val encoded = toOcrEntry(1, 1)
-//      encoded shouldBe expectedEncoding
-//      writeEntry(encoded) shouldBe "      \n" + "  |  |\n" + "  |  |\n" + "      "
-//    }
-//  }
+      val expected =
+          " _  _  _  _  _  _  _  _  _ \n" +
+          "| || || || || || || || || |\n" +
+          "|_||_||_||_||_||_||_||_||_|\n" +
+          "                           \n"
+
+      OcrNumber("000000000").write shouldBe expected
+    }
+
+    "should write OcrNumber 111111111" in {
+
+      val expected =
+          "                           \n" +
+          "  |  |  |  |  |  |  |  |  |\n" +
+          "  |  |  |  |  |  |  |  |  |\n" +
+          "                           \n"
+
+      OcrNumber("111111111").write shouldBe expected
+    }
+
+    "should write OcrNumber 222222222" in {
+
+      val expected =
+          " _  _  _  _  _  _  _  _  _ \n" +
+          " _| _| _| _| _| _| _| _| _|\n" +
+          "|_ |_ |_ |_ |_ |_ |_ |_ |_ \n" +
+          "                           \n"
+
+      OcrNumber("222222222").write shouldBe expected
+    }
+
+    "should write OcrNumber 333333333" in {
+
+      val expected =
+          " _  _  _  _  _  _  _  _  _ \n" +
+          " _| _| _| _| _| _| _| _| _|\n" +
+          " _| _| _| _| _| _| _| _| _|\n" +
+          "                           \n"
+
+      OcrNumber("333333333").write shouldBe expected
+    }
+
+    "should write OcrNumber 444444444" in {
+
+      val expected =
+          "                           \n" +
+          "|_||_||_||_||_||_||_||_||_|\n" +
+          "  |  |  |  |  |  |  |  |  |\n" +
+          "                           \n"
+
+      OcrNumber("444444444").write shouldBe expected
+    }
+
+    "should write OcrNumber 5555555555" in {
+
+      val expected =
+          " _  _  _  _  _  _  _  _  _ \n" +
+          "|_ |_ |_ |_ |_ |_ |_ |_ |_ \n" +
+          " _| _| _| _| _| _| _| _| _|\n" +
+          "                           \n"
+
+      OcrNumber("555555555").write shouldBe expected
+    }
+
+
+    "should write OcrNumber 666666666" in {
+
+      val expected =
+          " _  _  _  _  _  _  _  _  _ \n" +
+          "|_ |_ |_ |_ |_ |_ |_ |_ |_ \n" +
+          "|_||_||_||_||_||_||_||_||_|\n" +
+          "                           \n"
+
+      OcrNumber("666666666").write shouldBe expected
+    }
+
+    "should write OcrNumber 777777777" in {
+
+      val expected =
+          " _  _  _  _  _  _  _  _  _ \n" +
+          "  |  |  |  |  |  |  |  |  |\n" +
+          "  |  |  |  |  |  |  |  |  |\n" +
+          "                           \n"
+
+      OcrNumber("777777777").write shouldBe expected
+    }
+
+    "should write OcrNumber 888888888" in {
+
+      val expected =
+          " _  _  _  _  _  _  _  _  _ \n" +
+          "|_||_||_||_||_||_||_||_||_|\n" +
+          "|_||_||_||_||_||_||_||_||_|\n" +
+          "                           \n"
+
+      OcrNumber("888888888").write shouldBe expected
+    }
+
+    "should write OcrNumber 999999999" in {
+
+      val expected =
+          " _  _  _  _  _  _  _  _  _ \n" +
+          "|_||_||_||_||_||_||_||_||_|\n" +
+          " _| _| _| _| _| _| _| _| _|\n" +
+          "                           \n"
+
+      OcrNumber("999999999").write shouldBe expected
+    }
+
+    "should write OcrNumber 123456789" in {
+
+      val expected =
+          "    _  _     _  _  _  _  _ \n" +
+          "  | _| _||_||_ |_   ||_||_|\n" +
+          "  ||_  _|  | _||_|  ||_| _|\n" +
+          "                           \n"
+
+      OcrNumber("123456789").write shouldBe expected
+    }
+  }
 }
-
