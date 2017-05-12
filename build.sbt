@@ -1,6 +1,6 @@
 
 lazy val dependencies =Seq(
-  "org.typelevel" %% "cats" % "0.4.1"  withSources() withJavadoc(),
+  "org.typelevel" %% "cats" % "0.9.0"  withSources() withJavadoc(),
   "org.scalacheck" %% "scalacheck" % "1.12.1" % "test" withSources() withJavadoc(),
   "org.scalactic" %% "scalactic" % "3.0.0" % "test" withSources() withJavadoc(),
   "org.scalatest" % "scalatest_2.11" % "3.0.0" % "test"  withSources() withJavadoc()
