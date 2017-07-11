@@ -123,7 +123,6 @@ class TypeClassesSpec extends UnitSpec {
   // Structural Recursion
   "RND" - {
 
-
     println(Random.int.run())
     println(Random.int.run())
     println(Random.int.run())
@@ -133,8 +132,41 @@ class TypeClassesSpec extends UnitSpec {
     println(Random.int.run())
     println(Random.int.run())
     println(Random.double.run())
-
-
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
