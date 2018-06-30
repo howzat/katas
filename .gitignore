@@ -22,7 +22,7 @@ t.log
 target
 graphStore
 atlassian-ide-plugin.xml
-
+JointStatement.csv
 dependency-reduced-pom.xml
 
 tags
