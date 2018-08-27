@@ -1,12 +1,11 @@
-package benoit.cats
+package benoit.invites
 
-import benoit.cats.InviteService._
-import cats.data.EitherT
+import benoit.invites.InviteService._
+import cats.data._
 import cats.implicits._
-
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
-import scala.concurrent.Future._
+
 
 class BasicInviteService extends InviteService {
 

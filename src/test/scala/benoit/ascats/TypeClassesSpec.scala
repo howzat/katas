@@ -4,6 +4,8 @@ package benoit.ascats
 import benoit.UnitSpec
 import benoit.ascats.typeclasses.PrintersImplementations._
 import benoit.ascats.typeclasses.{Person, PrinterApi, PrinterSyntax}
+import cats._
+import cats.implicits._
 import scala.language.postfixOps
 
 
@@ -24,10 +26,6 @@ class TypeClassesSpec extends UnitSpec {
   }
 
   "Functor" - {
-
-    import cats.Functor
-    import cats.instances.option._
-    import cats.instances.list._
 
     def tuples[F[_],A](f : F[A])(implicit ftr:Functor[F]): F[(A,A)] = {
       ftr.map(f)((i:A) => (i,i))
@@ -58,13 +56,10 @@ class TypeClassesSpec extends UnitSpec {
   "tupled" - {
 
 
-
-    import cats.Monad
-//    import cats._
+    //    import cats._
 //    import cats.Monoid
 //    import cats.Functor
-    import cats.implicits._
-//    import cats.instances.option._
+    //    import cats.instances.option._
 //    import cats.syntax.flatMap._
 //    import cats.syntax.functor._
 //    import cats.syntax.monoid._

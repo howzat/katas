@@ -1,7 +1,5 @@
 package benoit.ascats.typeclasses
 
-import cats.implicits._
-
 case class Person(name:String, age:Int, occupation:String)
 
 object PrintersImplementations {

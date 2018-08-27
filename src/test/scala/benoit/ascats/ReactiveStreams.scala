@@ -9,11 +9,6 @@ import scala.language.postfixOps
 
 class ReactiveStreams extends UnitSpec {
 
-  import cats.Monoid
-  import cats.instances._
-  import cats.syntax.monoid._
-  import cats.implicits._
-
   sealed trait EventStream[A] {
 
     import EventStream._

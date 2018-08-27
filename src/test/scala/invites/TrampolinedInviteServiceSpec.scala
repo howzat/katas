@@ -1,12 +1,11 @@
-package cats
+package invites
 
+import benoit.invites.InviteService._
 import benoit.UnitSpec
-import benoit.cats.InviteService._
-import benoit.cats._
-
+import benoit.invites._
 import scala.concurrent.Future
 
-class BasicInviteServiceSpec extends UnitSpec {
+class TrampolinedInviteServiceSpec extends UnitSpec {
 
   "evaluateStateForUser" - {
 

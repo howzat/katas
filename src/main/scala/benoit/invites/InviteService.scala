@@ -1,6 +1,6 @@
-package benoit.cats
+package benoit.invites
 
-import benoit.cats.InviteService.{ErrorInfo, States}
+import benoit.invites.InviteService.{ErrorInfo, States}
 import cats.data.EitherT
 
 import scala.concurrent.Future
