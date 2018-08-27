@@ -18,15 +18,15 @@ class BasicInviteService extends InviteService {
 
 
   private def callAnotherMicroserviceThatReturns(returns: Boolean): Future[Either[ErrorInfo, Boolean]] = {
-    successful(Right(returns))
+    Future(Right(returns))
   }
 
   private def continueRunningSteps: NextStep = {
-    EitherT.right[ErrorInfo](successful(Continue))
+    EitherT.right[ErrorInfo](Future(Continue))
   }
 
   private def completeWithUserState(state: States): NextStep = {
-    EitherT.right[ErrorInfo](successful(Complete(state)))
+    EitherT.right[ErrorInfo](Future(Complete(state)))
   }
 
   private def isAlreadyEnrolled(state: Boolean): NextStep = {
@@ -58,7 +58,7 @@ class BasicInviteService extends InviteService {
   }
 
   private def inviteUser(): ErrorOrUserState = {
-    EitherT.right[ErrorInfo](successful(())).map (_ => InvitedFirstTime)
+    EitherT.right[ErrorInfo](Future(())).map (_ => InvitedFirstTime)
   }
 
 

@@ -4,11 +4,9 @@ import benoit.UnitSpec
 import benoit.cats.InviteService._
 import benoit.cats._
 
-class BasicInviteServiceSpec extends UnitSpec {
+import scala.concurrent.Future
 
-  private def thisShouldNeverBeCalled(s:String) :  Boolean = {
-    throw new RuntimeException(s"This call [$s] should never be made!")
-  }
+class BasicInviteServiceSpec extends UnitSpec {
 
   "evaluateStateForUser" - {
 
@@ -19,7 +17,7 @@ class BasicInviteServiceSpec extends UnitSpec {
         override def userIsAlreadyInvited: Boolean = false
         override def isOverDailyInviteLimit: Boolean = false
 
-      whenReady(new BasicInviteService().evaluateStateForUser(this).value){
+      whenReady(evaluateStateForUser(this)){
         _ shouldBe Right(InvitedFirstTime)
       }
     }
@@ -31,7 +29,7 @@ class BasicInviteServiceSpec extends UnitSpec {
       override def userIsEligible: Boolean = thisShouldNeverBeCalled("UserIsEligible")
       override def isOverDailyInviteLimit:Boolean = thisShouldNeverBeCalled("IsOverDailyInviteLimit")
 
-      whenReady(new BasicInviteService().evaluateStateForUser(this).value) {
+      whenReady(evaluateStateForUser(this)) {
         _ shouldBe Right(Invited)
       }
     }
@@ -43,7 +41,7 @@ class BasicInviteServiceSpec extends UnitSpec {
       override def userIsEligible: Boolean = true
       override def isOverDailyInviteLimit:Boolean = true
 
-      whenReady(new BasicInviteService().evaluateStateForUser(this).value) {
+      whenReady(evaluateStateForUser(this)) {
         _ shouldBe Right(NotEnrolled)
       }
     }
@@ -55,7 +53,7 @@ class BasicInviteServiceSpec extends UnitSpec {
       override def userIsAlreadyInvited:Boolean = false
       override def isOverDailyInviteLimit: Boolean = true
 
-      whenReady(new BasicInviteService().evaluateStateForUser(this).value) {
+      whenReady(evaluateStateForUser(this)) {
         _ shouldBe Right(NotEnrolled)
       }
     }
@@ -67,16 +65,17 @@ class BasicInviteServiceSpec extends UnitSpec {
       override def userIsAlreadyInvited:Boolean = thisShouldNeverBeCalled("UserIsAlreadyInvited")
       override def isOverDailyInviteLimit: Boolean = thisShouldNeverBeCalled("IsOverDailyInviteLimit")
 
-      whenReady(new BasicInviteService().evaluateStateForUser(this).value) {
+      whenReady(evaluateStateForUser(this)) {
         _ shouldBe Right(Enrolled)
       }
     }
   }
 
-  /*
-  override def UserIsAlreadyEnrolled:Boolean = thisShouldNeverBeCalled("UserIsAlreadyEnrolled")
-      override def UserIsEligible:Boolean = thisShouldNeverBeCalled("UserIsEligible")
-      override def UserIsAlreadyInvited:Boolean = thisShouldNeverBeCalled("UserIsAlreadyInvited")
-      override def IsOverDailyInviteLimit:Boolean = thisShouldNeverBeCalled("IsOverDailyInviteLimit")
-   */
+  private def evaluateStateForUser(serviceResponses: ServiceResponses): Future[Either[ErrorInfo, States]] = {
+    new BasicInviteService().evaluateStateForUser(serviceResponses).value
+  }
+
+  private def thisShouldNeverBeCalled(s:String) :  Boolean = {
+    throw new RuntimeException(s"This call [$s] should never be made!")
+  }
 }
