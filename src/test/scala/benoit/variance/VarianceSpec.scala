@@ -8,7 +8,8 @@ class VarianceSpec extends FlatSpec with Matchers {
 
   class ImInvariant[T]
   // +T covariance, it can be used in supertype positions
-  class Cell[+T](private[this] var init: T) {
+//  class Cell[+T](private[this] var init: T) {
+  class Cell[T](private[this] var init: T) {
 
 
     def add[UPDATE >: T](newValue:UPDATE) : Cell[UPDATE] = new Cell(newValue)
@@ -25,7 +26,7 @@ class VarianceSpec extends FlatSpec with Matchers {
   class MoreSpecificRelations[-T]()
 
 
-  "shoulf this " should "ccndk" in {
+  "shoulf this " should "ccndk" ignore {
 
 
     var cell = new Cell[String]("1230")

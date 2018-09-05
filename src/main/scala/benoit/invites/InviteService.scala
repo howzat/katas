@@ -1,35 +1,68 @@
 package benoit.invites
 
-import benoit.invites.InviteService.{ErrorInfo, States}
 import cats.Monad
-import cats.data.EitherT
+import cats.data._
 
-import scala.concurrent.Future
+class InviteService[G[_]]()(implicit MonadOps: Monad[G]) extends EvaluateStateForUser[G] {
 
-object InviteService {
+  private def continueRunningSteps: NextStep = {
+    EitherT.right[ErrorInfo](MonadOps.pure(Continue))
+  }
 
-  sealed trait States
-  case object StartingEvaluation extends States
-  case object NotEnrolled extends States
-  case object InvitedFirstTime extends States
-  case object Invited extends States
-  case object Enrolled extends States
+  private def completeWithUserState(state: States): NextStep = {
+    EitherT.right[ErrorInfo](MonadOps.pure(Complete(state)))
+  }
 
-  case class ErrorInfo()
-}
+  private def isAlreadyEnrolled(userStateClient: UserStateClient[G]): NextStep = {
+    EitherT(userStateClient.isAlreadyEnrolled).flatMap {
+      case isEnrolled if isEnrolled => completeWithUserState(Enrolled)
+      case _ => continueRunningSteps
+    }
+  }
 
-abstract class InviteService[F[_]:Monad] {
+  private def isUserEligibleToBeInvited(userStateClient: UserStateClient[G]): NextStep = {
+    EitherT(userStateClient.isUserEligibleToBeInvited).flatMap {
+      case isEligible if isEligible => continueRunningSteps
+      case _ => completeWithUserState(NotEnrolled)
+    }
+  }
 
-  implicit def F: Monad[F]
+  private def isUserInvited(userStateClient: UserStateClient[G]): NextStep = {
+    EitherT(userStateClient.isUserInvited).flatMap {
+      case isInvited if isInvited => completeWithUserState(Invited)
+      case _ => continueRunningSteps
+    }
+  }
 
-  type ErrorOrUserState = EitherT[F, ErrorInfo, States]
+  private def isWithinDailyInviteLimit(userStateClient: UserStateClient[G]): NextStep = {
+    EitherT(userStateClient.isWithinDailyInviteLimit).flatMap {
+      case reachedCapLimit if reachedCapLimit => completeWithUserState(NotEnrolled)
+      case _ => continueRunningSteps
+    }
+  }
 
-  def evaluateStateForUser(serviceResponses: ServiceResponses): ErrorOrUserState
-}
+  private def inviteUser(): ErrorOrUserState = {
+    EitherT.right[ErrorInfo](MonadOps.pure(InvitedFirstTime))
+  }
 
-trait ServiceResponses {
-  def userIsAlreadyEnrolled:Boolean
-  def userIsEligible:Boolean
-  def userIsAlreadyInvited:Boolean
-  def isOverDailyInviteLimit:Boolean
+  override def evaluateStateForUser(userStateClient: UserStateClient[G]): ErrorOrUserState = {
+
+    def step(runStep: => NextStep)(continue: => ErrorOrUserState): ErrorOrUserState = {
+      runStep.flatMap {
+        case Complete(state) => EitherT.right[ErrorInfo](MonadOps.pure(state))
+        case Continue => continue
+        case Failed(_) => continue
+      }
+    }
+
+    step(isAlreadyEnrolled(userStateClient)) {
+      step(isUserInvited(userStateClient)) {
+        step(isWithinDailyInviteLimit(userStateClient)) {
+          step(isUserEligibleToBeInvited(userStateClient)) {
+            inviteUser()
+          }
+        }
+      }
+    }
+  }
 }
