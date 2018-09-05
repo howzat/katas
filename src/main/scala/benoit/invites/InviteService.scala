@@ -1,6 +1,7 @@
 package benoit.invites
 
 import benoit.invites.InviteService.{ErrorInfo, States}
+import cats.Monad
 import cats.data.EitherT
 
 import scala.concurrent.Future
@@ -17,9 +18,11 @@ object InviteService {
   case class ErrorInfo()
 }
 
-trait InviteService {
+abstract class InviteService[F[_]:Monad] {
 
-  type ErrorOrUserState = EitherT[Future, ErrorInfo, States]
+  implicit def F: Monad[F]
+
+  type ErrorOrUserState = EitherT[F, ErrorInfo, States]
 
   def evaluateStateForUser(serviceResponses: ServiceResponses): ErrorOrUserState
 }

@@ -1,13 +1,15 @@
 package benoit.invites
 
 import benoit.invites.InviteService._
+import cats.Monad
 import cats.data._
 import cats.implicits._
-import scala.concurrent.ExecutionContext.Implicits.global
-import scala.concurrent.Future
+import scala.concurrent.{ExecutionContext, Future}
 
 
-class BasicInviteService extends InviteService {
+class BasicInviteService(implicit val ec:ExecutionContext) extends InviteService[Future] {
+
+  override implicit val F: Monad[Future] = implicitly[Monad[Future]]
 
   private sealed trait FlowControl
   private case class Complete(state: States) extends FlowControl
@@ -17,15 +19,15 @@ class BasicInviteService extends InviteService {
 
 
   private def callAnotherMicroserviceThatReturns(returns: Boolean): Future[Either[ErrorInfo, Boolean]] = {
-    Future(Right(returns))
+    F.pure(Right(returns))
   }
 
   private def continueRunningSteps: NextStep = {
-    EitherT.right[ErrorInfo](Future(Continue))
+    EitherT.right[ErrorInfo](F.pure(Continue))
   }
 
   private def completeWithUserState(state: States): NextStep = {
-    EitherT.right[ErrorInfo](Future(Complete(state)))
+    EitherT.right[ErrorInfo](F.pure(Complete(state)))
   }
 
   private def isAlreadyEnrolled(state: Boolean): NextStep = {
@@ -57,15 +59,14 @@ class BasicInviteService extends InviteService {
   }
 
   private def inviteUser(): ErrorOrUserState = {
-    EitherT.right[ErrorInfo](Future(())).map (_ => InvitedFirstTime)
+    EitherT.right[ErrorInfo](F.pure(InvitedFirstTime))
   }
-
 
   def evaluateStateForUser(serviceResponses: ServiceResponses): ErrorOrUserState = {
 
     def step(runStep: => NextStep)(continue: => ErrorOrUserState): ErrorOrUserState = {
       runStep.flatMap {
-        case Complete(state) => EitherT.pure[Future, ErrorInfo](state)
+        case Complete(state) => EitherT.right[ErrorInfo](F.pure(state))
         case Continue => continue
       }
     }
@@ -82,4 +83,5 @@ class BasicInviteService extends InviteService {
       }
     }
   }
+
 }

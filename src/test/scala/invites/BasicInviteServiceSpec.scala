@@ -3,8 +3,8 @@ package invites
 import benoit.UnitSpec
 import benoit.invites.InviteService._
 import benoit.invites._
-
-import scala.concurrent.Future
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.{ExecutionContext, Future}
 
 class BasicInviteServiceSpec extends UnitSpec {
 
